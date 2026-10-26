@@ -5,7 +5,7 @@ include "../../Config/db.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $role = $_POST['role'];
 
     $sql = "INSERT INTO users (Username, Email, PasswordHash, Role) VALUES (?, ?, ?, ?)";

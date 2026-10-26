@@ -32,9 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup'])) {
             $error = "An account with this email already exists.";
         } else {
             $token = bin2hex(random_bytes(16));
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
             $stmt = $conn->prepare("INSERT INTO users (Username, Email, PasswordHash, token) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssss", $Username, $email, $password, $token);
+            $stmt->bind_param("ssss", $Username, $email, $passwordHash, $token);
 
             if ($stmt->execute()) {
                 $name = htmlspecialchars($Username);

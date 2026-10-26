@@ -11,8 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_SESSION['reset_email'] ?? '';
     $newPasswordRaw = $_POST['password'] ?? '';
+    $hashedPassword = password_hash($newPasswordRaw, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("UPDATE users SET PasswordHash = ? WHERE Email = ?");
-    $stmt->bind_param("ss", $newPasswordRaw, $email);
+    $stmt->bind_param("ss", $hashedPassword, $email);
 
     if ($stmt->execute()) {
         unset($_SESSION['otp_verified'], $_SESSION['otp'], $_SESSION['reset_email']);

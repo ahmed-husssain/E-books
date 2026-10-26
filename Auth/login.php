@@ -12,12 +12,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        if ($password == $row['PasswordHash']) {
-          $_SESSION['user'] = $row['Username'];
-          $_SESSION['email'] = $email;
-          $_SESSION['user_id'] = $row['UserID'];
-          header("Location: ../User/Pages/home.php");
-          exit();
+        $storedHash = $row['PasswordHash'];
+        $isLegacy = is_string($storedHash) && hash_equals($storedHash, (string)$password);
+        $isValid = password_verify($password, $storedHash) || $isLegacy;
+
+        if ($isValid) {
+            // Automatically upgrade legacy plaintext passwords to standard bcrypt
+            if (password_needs_rehash($storedHash, PASSWORD_DEFAULT) || $storedHash === $password) {
+                $newHash = password_hash($password, PASSWORD_DEFAULT);
+                $up = $conn->prepare("UPDATE users SET PasswordHash = ? WHERE UserID = ?");
+                $up->bind_param("si", $newHash, $row['UserID']);
+                $up->execute();
+                $up->close();
+            }
+
+            $_SESSION['user'] = $row['Username'];
+            $_SESSION['email'] = $email;
+            $_SESSION['user_id'] = $row['UserID'];
+            header("Location: ../User/Pages/home.php");
+            exit();
         } else {
             $error = "Invalid email or password.";
         }
