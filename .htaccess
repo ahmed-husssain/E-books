@@ -1,0 +1,14 @@
+# Disable directory browsing
+Options -Indexes
+
+# Block access to database dumps, environment configs, logs, and backups
+<FilesMatch "(?i)\.(sql|env|log|bak|ini|sh|git.*)$">
+    Require all denied
+</FilesMatch>
+
+# Block direct access to database directory and hidden dotfiles
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^database/ - [F,L]
+    RewriteRule (^\.|/\.) - [F]
+</IfModule>
