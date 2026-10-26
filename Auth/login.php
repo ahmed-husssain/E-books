@@ -1,12 +1,22 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+    session_start();
+}
 include "../Config/db.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT UserID, Username, PasswordHash, Verified FROM users WHERE Email = ?");
+    $stmt = $conn->prepare("SELECT UserID, Username, PasswordHash, Role, Verified FROM users WHERE Email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -26,9 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $up->close();
             }
 
+            // Prevent session fixation by rotating session identifier upon privilege transition
+            session_regenerate_id(true);
+
             $_SESSION['user'] = $row['Username'];
             $_SESSION['email'] = $email;
             $_SESSION['user_id'] = $row['UserID'];
+            $_SESSION['role'] = $row['Role'];
             header("Location: ../User/Pages/home.php");
             exit();
         } else {

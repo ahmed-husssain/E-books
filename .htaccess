@@ -12,3 +12,20 @@ Options -Indexes
     RewriteRule ^database/ - [F,L]
     RewriteRule (^\.|/\.) - [F]
 </IfModule>
+
+# Enforce secure PHP session cookie defaults
+<IfModule mod_php.c>
+    php_value session.cookie_httponly 1
+    php_value session.use_only_cookies 1
+    php_value session.cookie_samesite "Lax"
+</IfModule>
+<IfModule mod_php7.c>
+    php_value session.cookie_httponly 1
+    php_value session.use_only_cookies 1
+    php_value session.cookie_samesite "Lax"
+</IfModule>
+<IfModule mod_php8.c>
+    php_value session.cookie_httponly 1
+    php_value session.use_only_cookies 1
+    php_value session.cookie_samesite "Lax"
+</IfModule>
