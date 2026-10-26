@@ -1,3 +1,8 @@
+<?php
+session_start();
+$otpError = $_SESSION['otp_error'] ?? null;
+unset($_SESSION['otp_error']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,6 +103,11 @@
                     </div>
                 </div>
 
+                <?php if (!empty($otpError)): ?>
+                    <div class="bg-red-900/60 border border-red-700 text-red-200 rounded-lg p-3 mb-6 text-sm text-center">
+                        <?php echo htmlspecialchars($otpError); ?>
+                    </div>
+                <?php endif; ?>
                 <div class="error-message bg-red-900 border border-red-700 text-red-200 rounded-lg p-3 mb-6 text-sm hidden" id="errorMessage"></div>
                 <div class="success-message bg-slate-800 border border-slate-700 text-emerald-400 rounded-lg p-3 mb-6 text-sm hidden" id="successMessage"></div>
 

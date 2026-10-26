@@ -21,10 +21,12 @@ if ($result->num_rows === 0) {
     exit;
 }
 
-$otp = rand(100000, 999999); 
-$_SESSION['otp'] = $otp;
+$otp = random_int(100000, 999999); 
+$_SESSION['otp'] = (string)$otp;
+$_SESSION['otp_expires'] = time() + 600; // 10 minutes validity
+$_SESSION['otp_attempts'] = 0;
+unset($_SESSION['otp_error']);
 $_SESSION['email'] = $email;
-$mail = new phpmailer(true);
 $mail = new PHPMailer(true);
 $mail->isSMTP();
 $mail->Host = 'smtp.gmail.com'; 
