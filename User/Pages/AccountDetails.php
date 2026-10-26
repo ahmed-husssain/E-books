@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../../Config/db.php";
+require_once "../../Config/csrf.php";
 
 // If user is not logged in
 if (!isset($_SESSION['email'])) {
@@ -10,6 +11,7 @@ if (!isset($_SESSION['email'])) {
 
 // Handle form update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+    require_csrf_token();
     $oldEmail = $_SESSION['email'];
 
     $newEmail = $_POST['Email'];
@@ -141,6 +143,7 @@ $user = $result->fetch_assoc();
                         <?php endif; ?>
 
                         <form method="POST" action="">
+                            <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
                             <?php if ($user['Verified']) { ?>
                                 <div class="bg-emerald-500/20 border-l-4 border-emerald-500 p-3 mb-6 flex items-center">
                                     <i class="ri-checkbox-circle-line text-emerald-400 text-lg mr-3"></i>

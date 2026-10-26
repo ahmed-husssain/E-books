@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../../Config/db.php";
+require_once __DIR__ . "/../../Config/csrf.php";
 
 if (!isset($_SESSION['user'])) {
     header("Location: ../../Auth/login.php");

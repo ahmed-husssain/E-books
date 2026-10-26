@@ -236,9 +236,13 @@ include "../Components/checkifadmin.php";
                                                 <a href="orderupdate.php?id=<?php echo htmlspecialchars($row['OrderID']); ?>" class="action-btn w-8 h-8 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-emerald-400 rounded-full transition-all duration-300">
                                                     <i class="ri-edit-line"></i>
                                                 </a>
-                                                <a href="deleteorder.php?id=<?php echo htmlspecialchars($row['OrderID']); ?>" onclick="return confirm('Are you sure you want to delete this order?')" class="action-btn w-8 h-8 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-red-400 rounded-full transition-all duration-300">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </a>
+                                                <form method="POST" action="deleteorder.php" onsubmit="return confirm('Are you sure you want to delete this order?');" class="inline m-0 p-0">
+                                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($row['OrderID']); ?>">
+                                                    <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                                                    <button type="submit" class="action-btn w-8 h-8 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-red-400 rounded-full transition-all duration-300">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>

@@ -237,9 +237,13 @@ $result = $conn->query($sql);
                                             <a href="updatesubmission.php?id=<?php echo htmlspecialchars($rows['SubmissionID']); ?>" class="w-8 h-8 flex items-center justify-center text-emerald-400 hover:text-emerald-500 hover-scale rounded-full bg-slate-700/50 transition duration-300" title="Edit Submission">
                                                 <i class="ri-edit-line text-base"></i>
                                             </a>
-                                            <a href="deletesubmission.php?id=<?php echo htmlspecialchars($rows['SubmissionID']); ?>" onclick="return confirm('Are you sure you want to delete this submission?');" class="w-8 h-8 flex items-center justify-center text-red-400 hover:text-red-500 hover-scale rounded-full bg-slate-700/50 transition duration-300" title="Delete Submission">
-                                                <i class="ri-delete-bin-line text-base"></i>
-                                            </a>
+                                            <form method="POST" action="deletesubmission.php" onsubmit="return confirm('Are you sure you want to delete this submission?');" class="inline m-0 p-0">
+                                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($rows['SubmissionID']); ?>">
+                                                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                                                <button type="submit" class="w-8 h-8 flex items-center justify-center text-red-400 hover:text-red-500 hover-scale rounded-full bg-slate-700/50 transition duration-300 border-0 cursor-pointer" title="Delete Submission">
+                                                    <i class="ri-delete-bin-line text-base"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>

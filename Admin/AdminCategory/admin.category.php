@@ -279,9 +279,13 @@ include "../../Config/db.php";
                             <a href="categoryupdate.php?id=<?= htmlspecialchars($row['CategoryID']); ?>" class="action-btn w-8 sm:w-12 h-8 sm:h-12 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-emerald-400 rounded-full transition-all duration-300">
                                 <i class="ri-edit-line text-base sm:text-lg"></i>
                             </a>
-                            <a href="categorydelete.php?id=<?= htmlspecialchars($row['CategoryID']); ?>" class="action-btn w-8 sm:w-12 h-8 sm:h-12 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-red-400 rounded-full transition-all duration-300">
-                                <i class="ri-delete-bin-line text-base sm:text-lg"></i>
-                            </a>
+                            <form method="POST" action="categorydelete.php" onsubmit="return confirm('Are you sure you want to delete this category?');" class="inline m-0 p-0">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($row['CategoryID']); ?>">
+                                <input type="hidden" name="csrf_token" value="<?= csrf_token(); ?>">
+                                <button type="submit" class="action-btn w-8 sm:w-12 h-8 sm:h-12 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-red-400 rounded-full transition-all duration-300">
+                                    <i class="ri-delete-bin-line text-base sm:text-lg"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

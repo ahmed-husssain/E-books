@@ -2,8 +2,10 @@
 include "../Components/checkifadmin.php";
 include "../../Config/db.php";
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+require_csrf_token();
+
+if (isset($_POST['id'])) {
+    $id = intval($_POST['id']);
     $sql = "DELETE FROM orders WHERE orderID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);

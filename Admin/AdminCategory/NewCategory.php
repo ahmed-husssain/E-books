@@ -230,8 +230,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<div class='flex justify-end gap-2'>";
                 echo "<a href='categoryupdate.php?id=" . $row['CategoryID'] . "' class='text-emerald-400 text-sm hover:text-emerald-300 flex items-center gap-1'>";
                 echo "<i class='ri-edit-line'></i> Edit</a>";
-                echo "<a href='categorydelete.php?id=" . $row['CategoryID'] . "' onclick='return confirm(\"Are you sure you want to delete this category?\");' class='text-red-400 text-sm hover:text-red-300 flex items-center gap-1'>";
-                echo "<i class='ri-delete-bin-line'></i> Delete</a>";
+                echo "<form method='POST' action='categorydelete.php' onsubmit='return confirm(\"Are you sure you want to delete this category?\");' class='inline m-0 p-0'>";
+                echo "<input type='hidden' name='id' value='" . htmlspecialchars($row['CategoryID']) . "'>";
+                echo "<input type='hidden' name='csrf_token' value='" . csrf_token() . "'>";
+                echo "<button type='submit' class='text-red-400 text-sm hover:text-red-300 flex items-center gap-1 bg-transparent border-0 p-0 cursor-pointer'>";
+                echo "<i class='ri-delete-bin-line'></i> Delete</button></form>";
                 echo "</div>";
                 echo "</div>";
                 echo "</td>";

@@ -218,9 +218,13 @@ include "../Components/checkifadmin.php";
                                                 <a href="competitions.update.php?id=<?php echo htmlspecialchars($rows['CompetitionID']); ?>" class="w-8 sm:w-12 h-8 sm:h-12 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-emerald-400 rounded-full transition-all duration-300">
                                                     <i class="ri-edit-line text-base sm:text-lg"></i>
                                                 </a>
-                                                <a href="competitions.delete.php?id=<?php echo htmlspecialchars($rows['CompetitionID']); ?>" class="w-8 sm:w-12 h-8 sm:h-12 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-red-400 rounded-full transition-all duration-300">
-                                                    <i class="ri-delete-bin-line text-base sm:text-lg"></i>
-                                                </a>
+                                                <form method="POST" action="competitions.delete.php" onsubmit="return confirm('Are you sure you want to delete this competition?');" class="inline m-0 p-0">
+                                                    <input type="hidden" name="id" value="<?php echo htmlspecialchars($rows['CompetitionID']); ?>">
+                                                    <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                                                    <button type="submit" class="w-8 sm:w-12 h-8 sm:h-12 flex items-center justify-center text-slate-400 hover:bg-slate-700/50 hover:text-red-400 rounded-full transition-all duration-300">
+                                                        <i class="ri-delete-bin-line text-base sm:text-lg"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
