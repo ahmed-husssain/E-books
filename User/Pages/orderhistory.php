@@ -185,10 +185,10 @@ $result = $stmt->get_result();
                                     </td>
                                     <td class="p-3 sm:p-4 flex space-x-2">
                                         <?php if ($order['Format'] === 'PDF' && $order['PaymentStatus'] === 'Paid'): ?>
-                                            <a href="../../Uploads/PDFs/<?= htmlspecialchars($order['PDFPath']) ?>" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>" target="_blank" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
                                                 <i class="ri-eye-line"></i>
                                             </a>
-                                            <a href="../../Uploads/PDFs/<?= htmlspecialchars($order['PDFPath']) ?>" download class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>&download=1" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
                                                 <i class="ri-download-line"></i>
                                             </a>
                                         <?php endif; ?>
@@ -257,10 +257,10 @@ $result = $stmt->get_result();
                                     <div class="flex justify-between">
                                         <span class="text-slate-400 text-sm">Action</span>
                                         <div class="flex space-x-2">
-                                            <a href="../../Uploads/PDFs/<?= htmlspecialchars($order['PDFPath']) ?>" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>" target="_blank" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
                                                 <i class="ri-eye-line"></i>
                                             </a>
-                                            <a href="../../Uploads/PDFs/<?= htmlspecialchars($order['PDFPath']) ?>" download class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>&download=1" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
                                                 <i class="ri-download-line"></i>
                                             </a>
                                         </div>

@@ -129,10 +129,10 @@ $result = $stmt->get_result();
                   <p class="text-slate-400 mb-4 text-base">by <?php echo htmlspecialchars($row['Author'] ?? 'Unknown Author'); ?></p>
                   <div class="flex items-center justify-between mb-8">
                     <div class="flex space-x-2">
-                      <a href="../../Uploads/PDFs/<?php echo htmlspecialchars($row['PDFPath']); ?>" target="_blank" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                      <a href="download.php?book_id=<?php echo htmlspecialchars($row['BookID']); ?>" target="_blank" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
                         <i class="ri-eye-line"></i>
                       </a>
-                      <a href="../../Uploads/PDFs/<?php echo htmlspecialchars($row['PDFPath']); ?>" download class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                      <a href="download.php?book_id=<?php echo htmlspecialchars($row['BookID']); ?>&download=1" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
                         <i class="ri-download-line"></i>
                       </a>
                     </div>

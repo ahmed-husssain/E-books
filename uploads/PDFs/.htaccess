@@ -1,0 +1,3 @@
+# Deny all direct HTTP requests to raw commercial PDF files
+# Access must be routed through the authorized streaming controller User/Pages/download.php
+Require all denied
