@@ -1,27 +1,32 @@
 <?php
 session_start();
 include "../../Config/db.php";
+require_once "../../Config/csrf.php";
+
+require_csrf_token();
 
 if (empty($_SESSION['cart']) || !isset($_SESSION['user_id'])) {
     header("Location: cart.php");
     exit();
 }
 
-$subtotal = 0;
-$has_non_pdf = false;
-
+// Re-verify catalog price from database: every item MUST be a $0.00 free PDF
 foreach ($_SESSION['cart'] as $item) {
-    $subtotal += $item['price'] * $item['qty'];
-    if (strtolower($item['format']) !== 'pdf') {
-        $has_non_pdf = true;
+    $book_id = intval($item['id'] ?? 0);
+    $stmt = $conn->prepare("SELECT Price FROM books WHERE BookID = ?");
+    $stmt->bind_param("i", $book_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $row = $res->fetch_assoc();
+    $stmt->close();
+
+    $catalogPrice = (float)($row['Price'] ?? 0);
+    $format = strtolower(trim($item['format'] ?? ''));
+
+    if ($catalogPrice > 0 || $format !== 'pdf') {
+        header("Location: payment.php");
+        exit();
     }
-}
-
-$total = $subtotal + ($has_non_pdf ? ($subtotal >= 50 ? 0 : 5.99) : 0);
-
-if ($total > 0) {
-    header("Location: payment.php");
-    exit();
 }
 
 $conn->begin_transaction();

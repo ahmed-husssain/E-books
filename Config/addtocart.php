@@ -6,10 +6,12 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-$id = $_POST['id'];
-$title = $_POST['title'];
-$format = $_POST['format'];
-$qty = $_POST['qty'];
+$id = intval($_POST['id'] ?? 0);
+$title = trim($_POST['title'] ?? '');
+$format = strtolower(trim($_POST['format'] ?? 'pdf'));
+$isPdf = $format === 'pdf';
+$rawQty = intval($_POST['qty'] ?? 1);
+$qty = $isPdf ? 1 : max(1, min(5, $rawQty));
 
 $sql = "SELECT Stock, HasHardCopy, HasCD, PDFPath, Price FROM books WHERE BookID = ?";
 $stmt = $conn->prepare($sql);
@@ -22,11 +24,11 @@ if ($result->num_rows === 0) {
 $book = $result->fetch_assoc();
 $stmt->close();
 
-$price = $book['Price'];
+$price = (float)$book['Price'];
 $cart_key = $id . '_' . $format;
 
 if (isset($_SESSION['cart'][$cart_key])) {
-    $new_qty = $_SESSION['cart'][$cart_key]['qty'] + $qty;
+    $new_qty = $isPdf ? 1 : min(5, max(1, $_SESSION['cart'][$cart_key]['qty'] + $qty));
     $_SESSION['cart'][$cart_key]['qty'] = $new_qty;
 } else {
     $_SESSION['cart'][$cart_key] = [

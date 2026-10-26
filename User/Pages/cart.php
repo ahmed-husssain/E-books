@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "../../Config/db.php"; // Include database connection
+require_once "../../Config/csrf.php";
 
 // Initialize cart if not set
 if (!isset($_SESSION['cart'])) {
@@ -313,6 +314,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </a>
                             <?php else: ?>
                                 <form method="POST" action="process_free_order.php" class="w-full">
+                                    <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
                                     <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl shadow-emerald-500/30 py-4 text-xl font-semibold rounded-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center mt-8">
                                         <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M...z"></path>
