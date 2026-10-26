@@ -1,5 +1,5 @@
 <?php
-include "../config/db.php";
+include_once __DIR__ . "/../Config/db.php";
 
 if (isset($_GET['token'])) {
     $token = $_GET['token'];

@@ -5,11 +5,19 @@ if (!isset($_SESSION['email']) || !isset($_SESSION['user'])) {
     die("Session variables not set.");
 }
 
+if (file_exists(__DIR__ . "/../../vendor/autoload.php")) {
+    require_once __DIR__ . "/../../vendor/autoload.php";
+}
+if (class_exists(\Dotenv\Dotenv::class)) {
+    $dotenvPath = dirname(__DIR__, 2);
+    if (file_exists($dotenvPath . '/.env')) {
+        $dotenv = \Dotenv\Dotenv::createImmutable($dotenvPath);
+        $dotenv->safeLoad();
+    }
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require "../../vendor/autoload.php";
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
 
 $recipientEmail = $_SESSION['email'];
 $userName = $_SESSION['user'];

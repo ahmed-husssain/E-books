@@ -1,12 +1,20 @@
 <?php
 session_start();
-include "../Config/db.php";
-use Dotenv\Dotenv;
+include_once __DIR__ . "/../Config/db.php";
+
+if (file_exists(__DIR__ . "/../vendor/autoload.php")) {
+    require_once __DIR__ . "/../vendor/autoload.php";
+}
+if (class_exists(\Dotenv\Dotenv::class)) {
+    $dotenvPath = dirname(__DIR__);
+    if (file_exists($dotenvPath . '/.env')) {
+        $dotenv = \Dotenv\Dotenv::createImmutable($dotenvPath);
+        $dotenv->safeLoad();
+    }
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require "../vendor/autoload.php";
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
 
 $error = "";
 
@@ -53,7 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup'])) {
                     $mail->addAddress($email, $name);
                     $mail->isHTML(true);
                     $mail->Subject = 'Email Verification';
-                    $verificationUrl = "http://localhost/EBOOKS/Auth/verify.php?token=$token";
+                    $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+                    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                    $base_url = (strpos($host, 'localhost') !== false) ? "$proto://$host/EBook" : "$proto://$host";
+                    $verificationUrl = "$base_url/Auth/verify.php?token=$token";
                     $mail->Body = <<<HTML
                     <!DOCTYPE html>
                     <html lang="en">

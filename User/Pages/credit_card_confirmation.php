@@ -1,13 +1,20 @@
 <?php
 session_start();
-include "../../Config/db.php";
-require "../../vendor/autoload.php";
+include_once __DIR__ . "/../../Config/db.php";
+
+if (file_exists(__DIR__ . "/../../vendor/autoload.php")) {
+    require_once __DIR__ . "/../../vendor/autoload.php";
+}
+if (class_exists(\Dotenv\Dotenv::class)) {
+    $dotenvPath = dirname(__DIR__, 2);
+    if (file_exists($dotenvPath . '/.env')) {
+        $dotenv = \Dotenv\Dotenv::createImmutable($dotenvPath);
+        $dotenv->safeLoad();
+    }
+}
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
 
 // Redirect if no order details or success parameter
 if (!isset($_GET['success']) || !isset($_SESSION['order_details']) || empty($_SESSION['order_details'])) {
