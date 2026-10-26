@@ -9,8 +9,9 @@
     </IfModule>
 </FilesMatch>
 
-# Protect database directory
+# Protect database directory and normalize upload paths
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^database/ - [F,L]
+    RewriteRule ^[Uu]ploads/[Ii]mages/(.*)$ uploads/Images/$1 [L,NC]
 </IfModule>

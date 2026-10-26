@@ -233,15 +233,15 @@ include "../../Config/db.php";
                                         echo "<tr><td colspan='7' class='px-4 sm:px-6 py-4 text-center text-slate-400'>Error fetching data: " . htmlspecialchars($conn->error) . "</td></tr>";
                                     } elseif ($data->num_rows > 0) {
                                         while ($rows = $data->fetch_assoc()) {
-                                            $imagePath = !empty($rows['image']) && file_exists("../../Uploads/images/" . $rows['image']) 
-                                                ? "../../Uploads/images/" . htmlspecialchars($rows['image']) 
-                                                : "../../Uploads/images/placeholder.jpg";
+                                            $imagePath = !empty($rows['image']) && file_exists(__DIR__ . "/../../uploads/Images/" . $rows['image']) 
+                                                ? "../../uploads/Images/" . htmlspecialchars($rows['image']) 
+                                                : "../../uploads/Images/placeholder.jpg";
                                     ?>
                                     <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition-all duration-300 scroll-animate">
                                         <td class="px-4 sm:px-6 py-3 sm:py-4" data-label="ID">
                                             <div class="flex items-center gap-2 sm:gap-3">
                                                 <div class="w-8 h-12 bg-slate-800 rounded-lg overflow-hidden">
-                                                    <img src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($rows['Title']); ?> Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='../../Uploads/images/placeholder.jpg'">
+                                                    <img src="<?php echo $imagePath; ?>" alt="<?php echo htmlspecialchars($rows['Title']); ?> Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.src='../../uploads/Images/placeholder.jpg'">
                                                 </div>
                                                 <span class="text-base font-medium text-slate-300"><?php echo htmlspecialchars($rows['BookID']); ?></span>
                                             </div>

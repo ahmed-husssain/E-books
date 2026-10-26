@@ -126,9 +126,10 @@ if ($book['HasCD']) {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <!-- Book Image -->
             <div class="scroll-animate">
-                <img src="../../uploads/images/<?php echo $book['image']?>"
+                <img src="../../uploads/Images/<?php echo htmlspecialchars($book['image']); ?>"
                      alt="<?= htmlspecialchars($book['Title']) ?>"
-                     class="book-image w-full h-[600px] object-cover rounded-2xl shadow-2xl">
+                     class="book-image w-full h-[600px] object-cover rounded-2xl shadow-2xl"
+                     onerror="this.onerror=null; this.src='../../uploads/Images/placeholder.jpg';">
             </div>
 
             <!-- Book Information -->

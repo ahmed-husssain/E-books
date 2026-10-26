@@ -302,7 +302,7 @@ session_start();
                                 <div class="absolute inset-0 bg-emerald-500/3 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                 <div class="p-0 relative">
                                     <div class="relative mb-6 overflow-hidden">
-                                        <img src="../../uploads/images/<?php echo $book['image']; ?>" alt="<?= $title ?>" class="object-cover group-hover:scale-110 transition-transform duration-700 w-full h-80">
+                                        <img src="../../uploads/Images/<?php echo htmlspecialchars($book['image']); ?>" alt="<?= $title ?>" class="object-cover group-hover:scale-110 transition-transform duration-700 w-full h-80" onerror="this.onerror=null; this.src='../../uploads/Images/placeholder.jpg';">
                                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                                         <div class="absolute top-4 right-4 space-y-2">
                                             <span class="category-tag bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1 font-semibold rounded-full backdrop-blur-xl block">

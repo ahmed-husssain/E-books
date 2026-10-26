@@ -488,15 +488,15 @@ include "../../Config/db.php";
                                             if ($result && $result->num_rows > 0) {
                                                 $index = 0;
                                                 while ($row = $result->fetch_assoc()) {
-                                                    $imagePath = !empty($row['image']) && file_exists("../../Uploads/images/" . $row['image']) 
-                                                        ? "../../Uploads/images/" . htmlspecialchars($row['image']) 
-                                                        : "../../Uploads/images/placeholder.jpg";
+                                                    $imagePath = !empty($row['image']) && file_exists(__DIR__ . "/../../uploads/Images/" . $row['image']) 
+                                                        ? "../../uploads/Images/" . htmlspecialchars($row['image']) 
+                                                        : "../../uploads/Images/placeholder.jpg";
                                             ?>
                                             <tr class="border-b border-slate-700/50 group/item">
                                                 <td class="py-2 sm:py-4 book-title">
                                                     <div class="flex items-center gap-2 sm:gap-3">
                                                         <div class="w-8 h-12 bg-slate-700 rounded overflow-hidden group-hover/item:scale-105 transition-transform duration-300">
-                                                            <img src="<?php echo $imagePath; ?>" alt="Book Cover" class="w-full h-full object-cover" onerror="this.src='../../Uploads/images/placeholder.jpg'">
+                                                            <img src="<?php echo $imagePath; ?>" alt="Book Cover" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='../../uploads/Images/placeholder.jpg'">
                                                         </div>
                                                         <span class="text-xs sm:text-sm md:text-base font-semibold text-white group-hover/item:text-emerald-400 transition-colors duration-300"><?php echo htmlspecialchars($row['Title']); ?></span>
                                                     </div>

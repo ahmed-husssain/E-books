@@ -276,7 +276,7 @@ foreach ($all_categories as $category) {
                     <!-- Book Showcase -->
                     <div class="book-container relative w-full mx-auto mb-6">
                         <div class="book backdrop-blur-2xl bg-slate-800/30 border border-slate-700/50 rounded-2xl shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500">
-                            <img src="../../Uploads/Images/<?php echo htmlspecialchars($latest_book_image ?? 'default-book.jpg'); ?>" alt="<?php echo htmlspecialchars($category_name); ?> Book" class="rounded-xl w-full object-cover">
+                            <img src="../../uploads/Images/<?php echo htmlspecialchars($latest_book_image ?? 'placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($category_name); ?> Book" class="rounded-xl w-full object-cover" onerror="this.onerror=null; this.src='../../uploads/Images/placeholder.jpg';">
                         </div>  
                     </div>
 

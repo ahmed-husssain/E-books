@@ -237,7 +237,7 @@ session_start();
                     <div class="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div class="p-0 relative">
                         <div class="relative mb-8 overflow-hidden">
-                            <img src="../../uploads/Images/<?php echo $row['image']?>" alt="<?php echo htmlspecialchars($row['Title']); ?>" class="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700">
+                            <img src="../../uploads/Images/<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['Title']); ?>" class="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700" onerror="this.onerror=null; this.src='../../uploads/Images/placeholder.jpg';">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent"></div>
                             <span class="absolute top-6 right-6 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-4 py-2 font-semibold rounded-full backdrop-blur-xl">
                                 <?php echo htmlspecialchars($row['CategoryName']); ?>

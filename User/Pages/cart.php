@@ -166,9 +166,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="backdrop-blur-2xl bg-slate-800/30 border border-slate-700/50 rounded-2xl p-6 shadow-2xl hover:shadow-emerald-500/10 transition-all duration-300 group">
                                 <div class="flex flex-col md:flex-row gap-6">
                                     <div class="relative">
-                                        <img src="../../uploads/images/<?php echo $book['image'] ?>" 
+                                        <img src="../../uploads/Images/<?php echo htmlspecialchars($book['image']); ?>" 
                                             alt="<?= htmlspecialchars($item['title']) ?>" 
-                                            class="w-32 h-48 object-cover rounded-xl group-hover:scale-105 transition-transform duration-300">
+                                            class="w-32 h-48 object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
+                                            onerror="this.onerror=null; this.src='../../uploads/Images/placeholder.jpg';">
                                         <form method="POST">
                                             <input type="hidden" name="cart_key" value="<?= $cart_key ?>">
                                             <input type="hidden" name="action" value="remove">
