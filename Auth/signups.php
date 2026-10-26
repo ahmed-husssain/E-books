@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup'])) {
     } elseif ($password !== $confirmPassword) {
         $error = "Passwords do not match.";
     } else {
-        $check = $conn->prepare("SELECT UserID FROM Users WHERE Email = ?");
+        $check = $conn->prepare("SELECT UserID FROM users WHERE Email = ?");
         $check->bind_param("s", $email);
         $check->execute();
         $check->store_result();
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup'])) {
         } else {
             $token = bin2hex(random_bytes(16));
 
-            $stmt = $conn->prepare("INSERT INTO Users (Username, Email, PasswordHash, token) VALUES (?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO users (Username, Email, PasswordHash, token) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $Username, $email, $password, $token);
 
             if ($stmt->execute()) {

@@ -181,7 +181,7 @@ session_start();
                         <div class="text-center">
                             <div class="text-4xl font-black text-emerald-400 mb-2">
                                 <?php
-                                $query = "SELECT COUNT(*) AS TotalUsers FROM Users";
+                                $query = "SELECT COUNT(*) AS TotalUsers FROM users";
                                 $result = $conn->query($query);
                                 if ($result) {
                                     $row = $result->fetch_assoc();
@@ -196,7 +196,7 @@ session_start();
                         <div class="text-center">
                             <div class="text-4xl font-black text-emerald-400 mb-2">
                                 <?php
-                                $query = "SELECT COUNT(*) AS TotalBooks FROM Books";
+                                $query = "SELECT COUNT(*) AS TotalBooks FROM books";
                                 $result = $conn->query($query);
                                 if ($result) {
                                     $row = $result->fetch_assoc();

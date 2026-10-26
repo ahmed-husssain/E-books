@@ -11,7 +11,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $book_id = $_GET['id'];
 
 // Fetch book details
-$sql = "SELECT b.*, c.CategoryName FROM Books b LEFT JOIN Categories c ON b.Category = c.CategoryID WHERE b.BookID = ?";
+$sql = "SELECT b.*, c.CategoryName FROM books b LEFT JOIN categories c ON b.Category = c.CategoryID WHERE b.BookID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $book_id);
 $stmt->execute();

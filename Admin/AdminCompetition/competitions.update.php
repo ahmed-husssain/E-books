@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($title) || empty($description) || empty($prize) || empty($startDate) || empty($endDate)) {
         $error = "All fields are required.";
     } else {
-        $sql = "UPDATE Competitions SET Title = ?, Description = ?, Type = ?, Prize = ?, StartDate = ?, EndDate = ? WHERE CompetitionID = ?";
+        $sql = "UPDATE competitions SET Title = ?, Description = ?, Type = ?, Prize = ?, StartDate = ?, EndDate = ? WHERE CompetitionID = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssssssi", $title, $description, $type, $prize, $startDate, $endDate, $id);
 
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$sql = "SELECT * FROM Competitions WHERE CompetitionID = ?";
+$sql = "SELECT * FROM competitions WHERE CompetitionID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $stmt->execute();

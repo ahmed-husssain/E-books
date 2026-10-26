@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['cart'][$cart_key]['qty'] = 1;
                     }
                 } elseif ($format === 'hardcover') {
-                    $sql = "SELECT Stock FROM Books WHERE BookID = ?";
+                    $sql = "SELECT Stock FROM books WHERE BookID = ?";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("i", $book_id);
                     $stmt->execute();
@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php foreach ($_SESSION['cart'] as $cart_key => $item): ?>
                             <?php
                             // Fetch book details for category and stock
-                            $sql = "SELECT c.CategoryName, b.image, b.Stock FROM Books b LEFT JOIN Categories c ON b.Category = c.CategoryID WHERE b.BookID = ?";
+                            $sql = "SELECT c.CategoryName, b.image, b.Stock FROM books b LEFT JOIN categories c ON b.Category = c.CategoryID WHERE b.BookID = ?";
                             $stmt = $conn->prepare($sql);
                             $stmt->bind_param("i", $item['id']);
                             $stmt->execute();

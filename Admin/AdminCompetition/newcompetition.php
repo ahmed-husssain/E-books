@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $endDate = $_POST['endDate'];
     $prize = $_POST['prize'];
 
-    $sql = "INSERT INTO Competitions (Title, Description, Type, StartDate, EndDate, Prize) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO competitions (Title, Description, Type, StartDate, EndDate, Prize) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssssss", $title, $description, $type, $startDate, $endDate, $prize);
 

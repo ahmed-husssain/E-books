@@ -158,7 +158,7 @@ session_start();
                         </div>
                         <h3 class="text-5xl font-black text-white mb-4 group-hover:text-emerald-400 transition-colors duration-300">
                             <?php
-                            $query = "SELECT COUNT(*) AS TotalBooks FROM Books";
+                            $query = "SELECT COUNT(*) AS TotalBooks FROM books";
                             $result = $conn->query($query);
                             if ($result) {
                                 $row = $result->fetch_assoc();
@@ -180,7 +180,7 @@ session_start();
                         </div>
                         <h3 class="text-5xl font-black text-white mb-4 group-hover:text-emerald-400 transition-colors duration-300">
                             <?php
-                            $query = "SELECT COUNT(*) AS TotalUsers FROM Users";
+                            $query = "SELECT COUNT(*) AS TotalUsers FROM users";
                             $result = $conn->query($query);
                             if ($result) {
                                 $row = $result->fetch_assoc();
@@ -202,7 +202,7 @@ session_start();
                         </div>
                         <h3 class="text-5xl font-black text-white mb-4 group-hover:text-emerald-400 transition-colors duration-300">
                             <?php
-                            $query = "SELECT COUNT(*) AS TotalWinners FROM Winners";
+                            $query = "SELECT COUNT(*) AS TotalWinners FROM winners";
                             $result = $conn->query($query);
                             if ($result) {
                                 $row = $result->fetch_assoc();

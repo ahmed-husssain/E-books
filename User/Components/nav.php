@@ -28,7 +28,7 @@ if ($isLoggedIn) {
             </a>
             <!-- Desktop Navigation Links -->
             <div class="hidden lg:flex items-center space-x-10">
-                <a href="../Pages/Home.php" class="relative text-slate-300 hover:text-emerald-400 transition-all duration-300 font-medium group">
+                <a href="../Pages/home.php" class="relative text-slate-300 hover:text-emerald-400 transition-all duration-300 font-medium group">
                     Home
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 group-hover:w-full transition-all duration-300"></span>
                 </a>
@@ -36,7 +36,7 @@ if ($isLoggedIn) {
                     Books
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 group-hover:w-full transition-all duration-300"></span>
                 </a>
-                <a href="../Pages/Category.php" class="relative text-slate-300 hover:text-emerald-400 transition-all duration-300 font-medium group">
+                <a href="../Pages/category.php" class="relative text-slate-300 hover:text-emerald-400 transition-all duration-300 font-medium group">
                     Categories
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 group-hover:w-full transition-all duration-300"></span>
                 </a>
@@ -48,7 +48,7 @@ if ($isLoggedIn) {
                     About
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 group-hover:w-full transition-all duration-300"></span>
                 </a>
-                <a href="../Pages/Contact.php" class="relative text-slate-300 hover:text-emerald-400 transition-all duration-300 font-medium group">
+                <a href="../Pages/contact.php" class="relative text-slate-300 hover:text-emerald-400 transition-all duration-300 font-medium group">
                     Contact
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-400 group-hover:w-full transition-all duration-300"></span>
                 </a>
@@ -90,7 +90,7 @@ if ($isLoggedIn) {
                                 <a href="orderhistory.php" class="block px-4 py-3 rounded-xl hover:bg-slate-700/50 hover:text-emerald-400 transition-all duration-200 text-slate-300 font-medium">
                                     Order History
                                 </a>
-                                <a href="MyBooks.php" class="block px-4 py-3 rounded-xl hover:bg-slate-700/50 hover:text-emerald-400 transition-all duration-200 text-slate-300 font-medium">
+                                <a href="Mybooks.php" class="block px-4 py-3 rounded-xl hover:bg-slate-700/50 hover:text-emerald-400 transition-all duration-200 text-slate-300 font-medium">
                                     My Books
                                 </a>
                                 <?php if ($row['Role'] == 'Admin'): ?>
@@ -136,12 +136,12 @@ if ($isLoggedIn) {
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="mobile-menu lg:hidden mt-4 backdrop-blur-2xl bg-slate-800/95 border-slate-700/50 rounded-2xl shadow-2xl">
             <div class="space-y-4">
-                <a href="../Pages/Home.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Home</a>
+                <a href="../Pages/home.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Home</a>
                 <a href="../Pages/books.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Books</a>
-                <a href="../Pages/Category.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Categories</a>
+                <a href="../Pages/category.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Categories</a>
                 <a href="../Pages/competitions.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Competition</a>
                 <a href="../Pages/About.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">About</a>
-                <a href="../Pages/Contact.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Contact</a>
+                <a href="../Pages/contact.php" class="block text-slate-300 hover:text-emerald-400 transition-colors duration-300 font-medium py-2">Contact</a>
                 <hr class="border-slate-700/50 my-4">
                 <div class="flex flex-col space-y-4">
                     <?php if ($isLoggedIn): ?>

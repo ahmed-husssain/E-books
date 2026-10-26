@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT UserID, Username, PasswordHash, Verified FROM Users WHERE Email = ?");
+    $stmt = $conn->prepare("SELECT UserID, Username, PasswordHash, Verified FROM users WHERE Email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();

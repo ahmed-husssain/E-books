@@ -1,1 +1,7 @@
 .env
+*.zip
+deploy_database.sql
+screenshots/
+fix_sql_tables.py
+upload_to_infinityfree.py
+scan_sqli.py

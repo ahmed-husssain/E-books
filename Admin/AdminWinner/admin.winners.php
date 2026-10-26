@@ -207,9 +207,9 @@ include "../Components/checkifadmin.php";
                                             u.Username AS UserName,
                                             w.Position,
                                             w.AwardedAt
-                                        FROM Winners w
-                                        JOIN Competitions c ON w.CompetitionID = c.CompetitionID
-                                        JOIN Users u ON w.UserID = u.UserID
+                                        FROM winners w
+                                        JOIN competitions c ON w.CompetitionID = c.CompetitionID
+                                        JOIN users u ON w.UserID = u.UserID
                                     ";
 
                                     $result = $conn->query($sql);

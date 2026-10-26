@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     $city = $_POST['City'];
     $state = $_POST['State'];
 
-    $stmt = $conn->prepare("UPDATE Users SET Email=?, FullName=?, PhoneNumber=?, City=?, State=? WHERE Email=?");
+    $stmt = $conn->prepare("UPDATE users SET Email=?, FullName=?, PhoneNumber=?, City=?, State=? WHERE Email=?");
     $stmt->bind_param("ssssss", $newEmail, $fullName, $phone, $city, $state, $oldEmail);
 
     if ($stmt->execute()) {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 }
 
 $email = $_SESSION['email'];
-$stmt = $conn->prepare("SELECT * FROM Users WHERE Email = ?");
+$stmt = $conn->prepare("SELECT * FROM users WHERE Email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();

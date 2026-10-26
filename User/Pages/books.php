@@ -203,7 +203,7 @@ session_start();
                         <h3 class="text-white font-semibold mb-4 text-lg">Genres</h3>
                         <div class="space-y-2">
                             <?php
-                            $catQuery = $conn->query("SELECT * FROM Categories");
+                            $catQuery = $conn->query("SELECT * FROM categories");
                             $selectedCategoryID = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
                             while ($cat = $catQuery->fetch_assoc()):
                                 $catVal = htmlspecialchars($cat['CategoryName']);

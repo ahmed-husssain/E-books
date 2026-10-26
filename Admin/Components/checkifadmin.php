@@ -8,7 +8,7 @@ if (!isset($_SESSION['user'])) {
 }
 $username = $_SESSION['user'];
 
-$stmt = $conn->prepare("SELECT Role FROM Users WHERE Username = ?");
+$stmt = $conn->prepare("SELECT Role FROM users WHERE Username = ?");
 $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();

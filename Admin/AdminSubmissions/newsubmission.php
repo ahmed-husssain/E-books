@@ -14,25 +14,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $timeExceeded = isset($_POST["time_limit_exceeded"]) ? 1 : 0;
 
     // File upload
-    $uploadDir = "../Uploads/Submissions/";
-    $fileName = basename($_FILES["document"]["name"]);
-    $uploadPath = $uploadDir . uniqid() . "_" . $fileName;
-
-    if (move_uploaded_file($_FILES["document"]["tmp_name"], $uploadPath)) {
-        $stmt = $conn->prepare("
-            INSERT INTO submissions (UserID, CompetitionID, DocumentPath, SubmissionDate, IsWinner, TimeLimitExceeded)
-            VALUES (?, ?, ?, NOW(), ?, ?)
-        ");
-        $stmt->bind_param("issii", $userId, $competitionId, $uploadPath, $isWinner, $timeExceeded);
-
-        if ($stmt->execute()) {
-            header("Location: submisions.php?success=1");
-            exit;
-        } else {
-            $error = "Failed to save submission.";
-        }
+    $error = "";
+    if (empty($_FILES["document"]["name"]) || $_FILES["document"]["error"] !== UPLOAD_ERR_OK) {
+        $error = "Please select a valid document to upload.";
     } else {
-        $error = "File upload failed.";
+        $orig_name = $_FILES["document"]["name"];
+        $ext = strtolower(pathinfo($orig_name, PATHINFO_EXTENSION));
+        $tmp_name = $_FILES["document"]["tmp_name"];
+        $file_size = $_FILES["document"]["size"];
+
+        $allowed_doc_exts = ['pdf', 'docx', 'txt'];
+        $allowed_doc_mimes = [
+            'application/pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/msword',
+            'text/plain'
+        ];
+
+        if (!in_array($ext, $allowed_doc_exts)) {
+            $error = "Invalid document extension. Only PDF, DOCX, and TXT files are allowed.";
+        } elseif ($file_size > 25 * 1024 * 1024) {
+            $error = "Document exceeds 25MB maximum size.";
+        } else {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $tmp_name);
+            finfo_close($finfo);
+
+            if (!in_array($mime, $allowed_doc_mimes)) {
+                $error = "Invalid document type. File content does not match allowed document types.";
+            } else {
+                $uploadDir = "../Uploads/Submissions/";
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
+                $clean_name = preg_replace('/[^a-zA-Z0-9_-]/', '_', pathinfo($orig_name, PATHINFO_FILENAME));
+                $clean_name = substr($clean_name, 0, 30);
+                $safe_fileName = $clean_name . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
+                $uploadPath = $uploadDir . $safe_fileName;
+
+                if (move_uploaded_file($tmp_name, $uploadPath)) {
+                    $stmt = $conn->prepare("
+                        INSERT INTO submissions (UserID, CompetitionID, DocumentPath, SubmissionDate, IsWinner, TimeLimitExceeded)
+                        VALUES (?, ?, ?, NOW(), ?, ?)
+                    ");
+                    $stmt->bind_param("issii", $userId, $competitionId, $uploadPath, $isWinner, $timeExceeded);
+
+                    if ($stmt->execute()) {
+                        header("Location: submisions.php?success=1");
+                        exit;
+                    } else {
+                        $error = "Failed to save submission.";
+                    }
+                } else {
+                    $error = "File upload failed to save.";
+                }
+            }
+        }
     }
 }
 ?>

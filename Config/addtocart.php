@@ -11,7 +11,7 @@ $title = $_POST['title'];
 $format = $_POST['format'];
 $qty = $_POST['qty'];
 
-$sql = "SELECT Stock, HasHardCopy, HasCD, PDFPath, Price FROM Books WHERE BookID = ?";
+$sql = "SELECT Stock, HasHardCopy, HasCD, PDFPath, Price FROM books WHERE BookID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $stmt->execute();

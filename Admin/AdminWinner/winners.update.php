@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="competitionID" required class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700/50 text-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-300">
                   <option value="" class="bg-slate-900">Select Competition</option>
                   <?php
-                  $compRes = $conn->query("SELECT CompetitionID, Title FROM Competitions");
+                  $compRes = $conn->query("SELECT CompetitionID, Title FROM competitions");
                   while ($comp = $compRes->fetch_assoc()) {
                     echo "<option value='" . $comp['CompetitionID'] . "' class='bg-slate-900'>" . htmlspecialchars($comp['Title']) . "</option>";
                   }
@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="userID" required class="w-full px-4 py-3 bg-slate-900/50 border border-slate-700/50 text-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-300">
                   <option value="" class="bg-slate-900">Select User</option>
                   <?php
-                  $userRes = $conn->query("SELECT UserID, Username FROM Users");
+                  $userRes = $conn->query("SELECT UserID, Username FROM users");
                   while ($user = $userRes->fetch_assoc()) {
                     echo "<option value='" . $user['UserID'] . "' class='bg-slate-900'>" . htmlspecialchars($user['Username']) . "</option>";
                   }

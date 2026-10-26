@@ -128,7 +128,7 @@
                         </h4>
                         <ul class="space-y-3">
                             <li>
-                                <a href="../Pages/Home.php" class="link-hover text-slate-300 hover:text-emerald-400 transition-all duration-300 flex items-center group">
+                                <a href="../Pages/home.php" class="link-hover text-slate-300 hover:text-emerald-400 transition-all duration-300 flex items-center group">
                                     <i class="ri-home-line mr-2 group-hover:text-emerald-400"></i>
                                     <span>Home</span>
                                 </a>
@@ -162,7 +162,7 @@
                         </h4>
                         <ul class="space-y-3">
                             <li>
-                                <a href="about.php" class="link-hover text-slate-300 hover:text-emerald-400 transition-all duration-300 flex items-center group">
+                                <a href="About.php" class="link-hover text-slate-300 hover:text-emerald-400 transition-all duration-300 flex items-center group">
                                     <i class="ri-information-line mr-2 group-hover:text-emerald-400"></i>
                                     <span>About Us</span>
                                 </a>

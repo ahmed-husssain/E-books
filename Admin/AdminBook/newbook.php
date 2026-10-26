@@ -2,56 +2,128 @@
 include "../Components/checkifadmin.php";
 include "../../Config/db.php";
 
+$error = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST['title'];
-    $author = $_POST['author'];
-    $category = $_POST['category'];
+    $title = trim($_POST['title'] ?? '');
+    $author = trim($_POST['author'] ?? '');
+    $category = $_POST['category'] ?? '';
     $price = $_POST['price'] ?? 0;
     $hasHardCopy = isset($_POST['hasHardCopy']) ? 1 : 0;
     $hasCD = isset($_POST['hasCD']) ? 1 : 0;
-    $stock = $_POST['stock'];
+    $stock = intval($_POST['stock'] ?? 0);
     $pdfPath = '';
     $image_name = '';
 
+    if (empty($title)) {
+        $error = "Book title is required.";
+    }
+
     // Handle PDF Upload
-    if (!empty($_FILES['pdfPath']['name'])) {
-        $pdf_name = basename($_FILES['pdfPath']['name']);
-        $pdf_tmp = $_FILES['pdfPath']['tmp_name'];
-        $pdf_folder = "../../uploads/PDFs/" . $pdf_name;
-        if (!is_dir("../../uploads/PDFs/")) {
-            mkdir("../../uploads/PDFs/", 0777, true);
-        }
-        if (move_uploaded_file($pdf_tmp, $pdf_folder)) {
-            $pdfPath = $pdf_name;
+    if (empty($error) && !empty($_FILES['pdfPath']['name'])) {
+        if ($_FILES['pdfPath']['error'] !== UPLOAD_ERR_OK) {
+            $error = "PDF upload error code: " . $_FILES['pdfPath']['error'];
+        } else {
+            $pdf_orig_name = $_FILES['pdfPath']['name'];
+            $pdf_ext = strtolower(pathinfo($pdf_orig_name, PATHINFO_EXTENSION));
+            $pdf_tmp = $_FILES['pdfPath']['tmp_name'];
+            $pdf_size = $_FILES['pdfPath']['size'];
+
+            // 1. Strict extension check
+            if ($pdf_ext !== 'pdf') {
+                $error = "Invalid document extension. Only .pdf files are allowed.";
+            } elseif ($pdf_size > 50 * 1024 * 1024) {
+                $error = "PDF file size exceeds 50MB limit.";
+            } else {
+                // 2. MIME type & magic bytes check
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime = finfo_file($finfo, $pdf_tmp);
+                finfo_close($finfo);
+
+                if ($mime !== 'application/pdf') {
+                    $error = "Invalid file type. The file content does not match a valid PDF.";
+                } else {
+                    $pdf_dir = "../../uploads/PDFs/";
+                    if (!is_dir($pdf_dir)) {
+                        mkdir($pdf_dir, 0755, true);
+                    }
+                    // 3. Secure randomized filename with sanitized original prefix
+                    $clean_base = preg_replace('/[^a-zA-Z0-9_-]/', '_', pathinfo($pdf_orig_name, PATHINFO_FILENAME));
+                    $clean_base = substr($clean_base, 0, 30);
+                    $pdf_name = $clean_base . '_' . bin2hex(random_bytes(8)) . '.pdf';
+                    $pdf_target = $pdf_dir . $pdf_name;
+
+                    if (move_uploaded_file($pdf_tmp, $pdf_target)) {
+                        $pdfPath = $pdf_name;
+                    } else {
+                        $error = "Failed to save uploaded PDF file.";
+                    }
+                }
+            }
         }
     }
 
     // Handle Image Upload
-    if (!empty($_FILES['image']['name'])) {
-        $image_name = basename($_FILES['image']['name']);
-        $image_tmp = $_FILES['image']['tmp_name'];
-        $image_folder = "../../uploads/Images/" . $image_name;
-        if (!is_dir("../../uploads/Images/")) {
-            mkdir("../../uploads/Images/", 0777, true);
+    if (empty($error) && !empty($_FILES['image']['name'])) {
+        if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+            $error = "Image upload error code: " . $_FILES['image']['error'];
+        } else {
+            $img_orig_name = $_FILES['image']['name'];
+            $img_ext = strtolower(pathinfo($img_orig_name, PATHINFO_EXTENSION));
+            $img_tmp = $_FILES['image']['tmp_name'];
+            $img_size = $_FILES['image']['size'];
+
+            $allowed_img_exts = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+            $allowed_img_mimes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
+
+            if (!in_array($img_ext, $allowed_img_exts)) {
+                $error = "Invalid image extension. Only JPG, JPEG, PNG, WEBP, and AVIF are allowed.";
+            } elseif ($img_size > 10 * 1024 * 1024) {
+                $error = "Image file size exceeds 10MB limit.";
+            } else {
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $img_mime = finfo_file($finfo, $img_tmp);
+                finfo_close($finfo);
+
+                if (!in_array($img_mime, $allowed_img_mimes) || !@getimagesize($img_tmp)) {
+                    $error = "Invalid image format. The file is not a valid recognized image.";
+                } else {
+                    $img_dir = "../../uploads/Images/";
+                    if (!is_dir($img_dir)) {
+                        mkdir($img_dir, 0755, true);
+                    }
+                    $clean_img = preg_replace('/[^a-zA-Z0-9_-]/', '_', pathinfo($img_orig_name, PATHINFO_FILENAME));
+                    $clean_img = substr($clean_img, 0, 30);
+                    $image_file = $clean_img . '_' . bin2hex(random_bytes(8)) . '.' . $img_ext;
+                    $img_target = $img_dir . $image_file;
+
+                    if (move_uploaded_file($img_tmp, $img_target)) {
+                        $image_name = $image_file;
+                    } else {
+                        $error = "Failed to save uploaded cover image.";
+                    }
+                }
+            }
         }
-        move_uploaded_file($image_tmp, $image_folder);
     }
 
-    // Insert into books table
-    $sql = "INSERT INTO books (Title, Author, Category, Price, PDFPath, HasHardCopy, HasCD, Stock, image)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    if ($stmt) {
-        $stmt->bind_param("sssdsiiss", $title, $author, $category, $price, $pdfPath, $hasHardCopy, $hasCD, $stock, $image_name);
-        if ($stmt->execute()) {
-            header("Location: admin.books.php");
-            exit();
+    // Insert into books table if all validations passed
+    if (empty($error)) {
+        $sql = "INSERT INTO books (Title, Author, Category, Price, PDFPath, HasHardCopy, HasCD, Stock, image)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param("sssdsiiss", $title, $author, $category, $price, $pdfPath, $hasHardCopy, $hasCD, $stock, $image_name);
+            if ($stmt->execute()) {
+                header("Location: admin.books.php");
+                exit();
+            } else {
+                $error = "Database Error: " . $stmt->error;
+            }
+            $stmt->close();
         } else {
-            echo "Database Error: " . $stmt->error;
+            $error = "Database Prepare Failed: " . $conn->error;
         }
-        $stmt->close();
-    } else {
-        echo "Prepare failed: " . $conn->error;
     }
 }
 ?>
