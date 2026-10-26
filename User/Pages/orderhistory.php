@@ -19,7 +19,7 @@ $result = $stmt->get_result();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History - E - Books</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -50,25 +50,49 @@ $result = $stmt->get_result();
         }
     </script>
     <style>
+        :root {
+            --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+        }
         body {
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
         }
+        button:active, a.btn-press:active, a:active {
+            transform: scale(0.96) !important;
+            transition: transform 80ms var(--ease-apple) !important;
+        }
+        button:focus-visible, a:focus-visible {
+            outline: 2px solid #10b981 !important;
+            outline-offset: 2px !important;
+        }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms var(--ease-apple), transform 280ms var(--ease-apple);
         }
         .scroll-animate.visible {
             opacity: 1;
             transform: translateY(0);
         }
         .order-card {
-            transition: all 0.3s ease;
+            transition: transform 220ms var(--ease-apple), box-shadow 220ms var(--ease-apple);
         }
         .order-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 150ms !important;
+            }
+            .scroll-animate, .order-card {
+                transform: none !important;
+                opacity: 1 !important;
+            }
+            button:active, a:active {
+                transform: none !important;
+            }
         }
         .table-header {
             background: linear-gradient(to bottom, #1e293b, #0f172a);
@@ -185,10 +209,10 @@ $result = $stmt->get_result();
                                     </td>
                                     <td class="p-3 sm:p-4 flex space-x-2">
                                         <?php if ($order['Format'] === 'PDF' && $order['PaymentStatus'] === 'Paid'): ?>
-                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>" target="_blank" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>" target="_blank" class="bg-slate-700 hover:bg-emerald-600 text-white min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 text-lg btn-press" aria-label="Read <?= htmlspecialchars($order['Title']) ?> online">
                                                 <i class="ri-eye-line"></i>
                                             </a>
-                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>&download=1" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>&download=1" class="bg-slate-700 hover:bg-emerald-600 text-white min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 text-lg btn-press" aria-label="Download <?= htmlspecialchars($order['Title']) ?> PDF">
                                                 <i class="ri-download-line"></i>
                                             </a>
                                         <?php endif; ?>
@@ -257,10 +281,10 @@ $result = $stmt->get_result();
                                     <div class="flex justify-between">
                                         <span class="text-slate-400 text-sm">Action</span>
                                         <div class="flex space-x-2">
-                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>" target="_blank" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>" target="_blank" class="bg-slate-700 hover:bg-emerald-600 text-white min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 text-lg btn-press" aria-label="Read <?= htmlspecialchars($order['Title']) ?> online">
                                                 <i class="ri-eye-line"></i>
                                             </a>
-                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>&download=1" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                                            <a href="download.php?book_id=<?= htmlspecialchars($order['BookID']) ?>&download=1" class="bg-slate-700 hover:bg-emerald-600 text-white min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 text-lg btn-press" aria-label="Download <?= htmlspecialchars($order['Title']) ?> PDF">
                                                 <i class="ri-download-line"></i>
                                             </a>
                                         </div>

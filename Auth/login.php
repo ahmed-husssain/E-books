@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - E - Books</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -96,17 +96,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
         }
+        :root {
+            --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        button:active, a:active {
+            transform: scale(0.96) !important;
+            transition: transform 80ms var(--ease-apple) !important;
+        }
+        button:focus-visible, a:focus-visible, input:focus-visible {
+            outline: 2px solid #10b981 !important;
+            outline-offset: 2px !important;
+        }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms var(--ease-apple), transform 280ms var(--ease-apple);
         }
         .scroll-animate.visible {
             opacity: 1;
             transform: translateY(0);
         }
         .form-input {
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.2s var(--ease-apple), box-shadow 0.2s var(--ease-apple);
         }
         .form-input:focus {
             border-color: #10b981;
@@ -137,13 +148,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .toggle-password {
             cursor: pointer;
         }
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .mobile-menu.open {
-            max-height: 500px;
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 150ms !important;
+            }
+            .scroll-animate, .form-button {
+                transform: none !important;
+                opacity: 1 !important;
+            }
+            button:active, a:active {
+                transform: none !important;
+            }
         }
     </style>
 </head>
@@ -211,9 +227,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 placeholder="Enter your password"
                                 required
                             />
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 toggle-password w-10 h-10">
+                            <button type="button" class="absolute inset-y-0 right-0 flex items-center justify-center pr-3 toggle-password min-w-[44px] min-h-[44px]" aria-label="Toggle password visibility">
                                 <i class="ri-eye-line text-slate-400"></i>
-                            </div>
+                            </button>
                         </div>
                     </div>
 
@@ -223,7 +239,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <button
                         type="submit"
-                        class="form-button w-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl shadow-emerald-500/30 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+                        class="form-button w-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl shadow-emerald-500/30 py-3 sm:py-4 min-h-[48px] text-base sm:text-lg font-semibold rounded-xl transition-all duration-200 btn-press"
                     >
                         Sign In
                     </button>

@@ -92,37 +92,25 @@ if ($book['HasCD']) {
         }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .scroll-animate.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .dropdown-menu {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(8px);
-            transition: all 0.3s ease;
-        }
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .mobile-menu.open {
-            max-height: 500px;
-        }
         .book-image {
-            transition: transform 0.3s ease;
+            transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .book-image:hover {
-            transform: scale(1.05);
+            transform: scale(1.03);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-animate, .book-image {
+                opacity: 1 !important;
+                transform: none !important;
+                transition-duration: 150ms !important;
+            }
         }
     </style>
 </head>

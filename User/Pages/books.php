@@ -70,32 +70,40 @@ session_start();
         }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .scroll-animate.visible {
             opacity: 1;
             transform: translateY(0);
         }
         .book-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .book-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         .category-tag {
-            transition: all 0.3s ease;
+            transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .category-tag:hover {
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
         .fade-in {
-            animation: fadeIn 0.5s ease-in;
+            animation: fadeIn 250ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-animate, .book-card, .category-tag, .fade-in {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+                transition-duration: 150ms !important;
+            }
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -113,25 +121,6 @@ session_start();
             background: #64748b;
             border-radius: 2px;
             outline: none;
-        }
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .dropdown-menu {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(8px);
-            transition: all 0.3s ease;
-        }
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .mobile-menu.open {
-            max-height: 500px;
         }
         @media (min-width: 1024px) {
             #filters-panel {

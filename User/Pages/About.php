@@ -57,8 +57,8 @@ session_start();
         }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .scroll-animate.visible {
             opacity: 1;
@@ -67,24 +67,12 @@ session_start();
         .bg-blur {
             filter: blur(3rem);
         }
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .dropdown-menu {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(8px);
-            transition: all 0.3s ease;
-        }
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .mobile-menu.open {
-            max-height: 500px;
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-animate {
+                opacity: 1 !important;
+                transform: none !important;
+                transition-duration: 150ms !important;
+            }
         }
         /* Center the last two cards in the second row for five items on large screens */
         #team-grid.five-items {

@@ -49,7 +49,7 @@ $user = $result->fetch_assoc();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings - E-Books</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -111,8 +111,16 @@ $user = $result->fetch_assoc();
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
+        button:active, a.btn-press:active, a:active {
+            transform: scale(0.96) !important;
+            transition: transform 80ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        button:focus-visible, a:focus-visible, input:focus-visible {
+            outline: 2px solid #10b981 !important;
+            outline-offset: 2px !important;
+        }
         .form-input {
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .form-input:focus {
             border-color: #10b981;
@@ -123,6 +131,15 @@ $user = $result->fetch_assoc();
             pointer-events: auto !important;
             opacity: 1 !important;
             cursor: pointer;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 150ms !important;
+            }
+            button:active, a:active {
+                transform: none !important;
+            }
         }
     </style>
 </head>
@@ -203,11 +220,11 @@ $user = $result->fetch_assoc();
                                     </div>
                                 </div>
 
-                                <div class="flex justify-between mt-6">
-                                    <a href="home.php" class="px-6 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 hover:text-emerald-400 rounded-button text-sm font-medium transition-all duration-300">Go Back</a>
-                                    <div>
-                                        <button type="reset" class="px-6 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 hover:text-emerald-400 rounded-button text-sm font-medium transition-all duration-300 mr-3">Cancel</button>
-                                        <button type="submit" name="update" class="px-6 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-button text-sm font-medium hover:scale-105 transition-all duration-300">Save Changes</button>
+                                <div class="flex justify-between items-center mt-6">
+                                    <a href="home.php" class="px-6 py-2.5 min-h-[44px] inline-flex items-center justify-center bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 hover:text-emerald-400 rounded-button text-sm font-medium transition-all duration-200 btn-press">Go Back</a>
+                                    <div class="flex items-center space-x-3">
+                                        <button type="reset" class="px-6 py-2.5 min-h-[44px] inline-flex items-center justify-center bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 hover:text-emerald-400 rounded-button text-sm font-medium transition-all duration-200 btn-press">Cancel</button>
+                                        <button type="submit" name="update" class="px-6 py-2.5 min-h-[44px] inline-flex items-center justify-center bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-button text-sm font-medium hover:brightness-110 transition-all duration-200 btn-press shadow-lg shadow-emerald-500/20">Save Changes</button>
                                     </div>
                                 </div>
                             </div>

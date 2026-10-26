@@ -112,8 +112,8 @@ foreach ($all_categories as $category) {
         }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .scroll-animate.visible {
             opacity: 1;
@@ -190,13 +190,13 @@ foreach ($all_categories as $category) {
         .explore-button:hover::before {
             left: 100%;
         }
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .mobile-menu.open {
-            max-height: 500px;
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-animate, .book, .category-card, .category-nav-button, .text-split span {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+                transition-duration: 150ms !important;
+            }
         }
         @media (min-width: 640px) {
             .category-header h2 { font-size: 4rem; }

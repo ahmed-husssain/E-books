@@ -108,31 +108,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .scroll-animate.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .dropdown-menu {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(8px);
-            transition: all 0.3s ease;
-        }
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .mobile-menu.open {
-            max-height: 500px;
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-animate {
+                opacity: 1 !important;
+                transform: none !important;
+                transition-duration: 150ms !important;
+            }
         }
     </style>
 </head>
@@ -184,8 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <form method="POST">
                                             <input type="hidden" name="cart_key" value="<?= $cart_key ?>">
                                             <input type="hidden" name="action" value="remove">
-                                            <button type="submit" class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors duration-200">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <button type="submit" class="absolute -top-2 -right-2 min-w-[44px] min-h-[44px] w-11 h-11 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 shadow-lg btn-press" aria-label="Remove <?= htmlspecialchars($item['title']) ?> from cart">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                 </svg>
                                             </button>
@@ -214,8 +202,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <input type="hidden" name="cart_key" value="<?= $cart_key ?>">
                                                     <input type="hidden" name="action" value="update_qty">
                                                     <button type="submit" name="qty" value="<?= $item['qty'] - 1 ?>" 
-                                                        class="p-3 hover:bg-slate-600/50 rounded-l-xl transition-colors duration-200 <?= $item['qty'] <= 1 ? 'opacity-50 cursor-not-allowed' : '' ?>" 
-                                                        <?= $item['qty'] <= 1 ? 'disabled' : '' ?>>
+                                                        class="min-w-[44px] min-h-[44px] flex items-center justify-center p-3 hover:bg-slate-600/50 rounded-l-xl transition-colors duration-200 btn-press <?= $item['qty'] <= 1 ? 'opacity-50 cursor-not-allowed' : '' ?>" 
+                                                        <?= $item['qty'] <= 1 ? 'disabled' : '' ?>
+                                                        aria-label="Decrease quantity of <?= htmlspecialchars($item['title']) ?>">
                                                         <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
                                                         </svg>
@@ -226,8 +215,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                                     <!-- Plus Button -->
                                                     <button type="submit" name="qty" value="<?= $item['qty'] + 1 ?>" 
-                                                        class="p-3 hover:bg-slate-600/50 rounded-r-xl transition-colors duration-200 <?= $item['qty'] >= 5 || $item['qty'] >= $book['Stock'] ? 'opacity-50 cursor-not-allowed' : '' ?>" 
-                                                        <?= $item['qty'] >= 5 || $item['qty'] >= $book['Stock'] ? 'disabled' : '' ?>>
+                                                        class="min-w-[44px] min-h-[44px] flex items-center justify-center p-3 hover:bg-slate-600/50 rounded-r-xl transition-colors duration-200 btn-press <?= $item['qty'] >= 5 || $item['qty'] >= $book['Stock'] ? 'opacity-50 cursor-not-allowed' : '' ?>" 
+                                                        <?= $item['qty'] >= 5 || $item['qty'] >= $book['Stock'] ? 'disabled' : '' ?>
+                                                        aria-label="Increase quantity of <?= htmlspecialchars($item['title']) ?>">
                                                         <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                                         </svg>

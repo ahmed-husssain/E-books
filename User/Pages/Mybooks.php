@@ -25,7 +25,7 @@ $result = $stmt->get_result();
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Books - Story Shelf</title>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -56,9 +56,20 @@ $result = $stmt->get_result();
     };
   </script>
   <style>
+    :root {
+      --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+    }
     body {
       font-family: 'Poppins', sans-serif;
       overflow-x: visible;
+    }
+    button:active, a.btn-press:active, a:active {
+      transform: scale(0.96) !important;
+      transition: transform 80ms var(--ease-apple) !important;
+    }
+    button:focus-visible, a:focus-visible {
+      outline: 2px solid #10b981 !important;
+      outline-offset: 2px !important;
     }
     ::-webkit-scrollbar {
       width: 10px;
@@ -76,13 +87,26 @@ $result = $stmt->get_result();
       background-color: #059669; /* emerald-600 */
     }
     .scroll-animate {
-      opacity: 1; /* Force visibility initially */
-      transform: translateY(0);
-      transition: all 1s ease-out;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 280ms var(--ease-apple), transform 280ms var(--ease-apple);
     }
     .scroll-animate.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 150ms !important;
+      }
+      .scroll-animate, [class*="hover:-translate"] {
+        transform: none !important;
+        opacity: 1 !important;
+      }
+      button:active, a:active {
+        transform: none !important;
+      }
     }
   </style>
 </head>
@@ -128,16 +152,16 @@ $result = $stmt->get_result();
                   </h2>
                   <p class="text-slate-400 mb-4 text-base">by <?php echo htmlspecialchars($row['Author'] ?? 'Unknown Author'); ?></p>
                   <div class="flex items-center justify-between mb-8">
-                    <div class="flex space-x-2">
-                      <a href="download.php?book_id=<?php echo htmlspecialchars($row['BookID']); ?>" target="_blank" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                    <div class="flex space-x-3">
+                      <a href="download.php?book_id=<?php echo htmlspecialchars($row['BookID']); ?>" target="_blank" class="bg-slate-700 hover:bg-emerald-600 text-white min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 text-lg btn-press" aria-label="Read <?php echo htmlspecialchars($row['Title'] ?? 'eBook'); ?> online">
                         <i class="ri-eye-line"></i>
                       </a>
-                      <a href="download.php?book_id=<?php echo htmlspecialchars($row['BookID']); ?>&download=1" class="bg-slate-500 hover:bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300">
+                      <a href="download.php?book_id=<?php echo htmlspecialchars($row['BookID']); ?>&download=1" class="bg-slate-700 hover:bg-emerald-600 text-white min-w-[44px] min-h-[44px] w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 text-lg btn-press" aria-label="Download <?php echo htmlspecialchars($row['Title'] ?? 'eBook'); ?> PDF">
                         <i class="ri-download-line"></i>
                       </a>
                     </div>
                   </div>
-                  <a href="book-details.php?id=<?php echo htmlspecialchars($row['BookID']); ?>" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl shadow-emerald-500/30 py-2 text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 block text-center">
+                  <a href="book-details.php?id=<?php echo htmlspecialchars($row['BookID']); ?>" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl shadow-emerald-500/30 py-3 text-base font-semibold rounded-xl transition-all duration-200 min-h-[44px] flex items-center justify-center btn-press">
                     View Details
                   </a>
                 </div>
@@ -156,6 +180,26 @@ $result = $stmt->get_result();
     </div>
   </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        document.querySelectorAll(".scroll-animate").forEach(el => observer.observe(el));
+      } else {
+        document.querySelectorAll(".scroll-animate").forEach(el => el.classList.add("visible"));
+      }
+    });
+  </script>
+  <noscript>
+    <style>.scroll-animate { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
 </body>
 </html>
 

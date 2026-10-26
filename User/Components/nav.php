@@ -16,10 +16,85 @@ if ($isLoggedIn) {
 }
 ?>
 
+<style>
+/* Apple Fluid & Kowalski Motion Tokens */
+:root {
+    --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Global Tactile Press Feedback (Apple HIG) */
+button:active, 
+a[role="button"]:active,
+.btn-press:active,
+input[type="submit"]:active {
+    transform: scale(0.96) !important;
+    transition: transform 80ms var(--ease-apple) !important;
+}
+
+/* Accessible Focus Visible Ring */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #10b981 !important;
+    outline-offset: 2px !important;
+}
+
+/* Dropdown Menu - GPU Opacity & Transform with Symmetrical Exit */
+.dropdown-menu, .nav-dropdown {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.97);
+    transform-origin: top right;
+    pointer-events: none;
+    transition: opacity 180ms var(--ease-apple), transform 180ms var(--ease-apple), visibility 180ms var(--ease-apple);
+}
+.dropdown-menu.active, .nav-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Mobile Navigation Menu - Smooth Symmetrical Collapse/Expand */
+.mobile-menu, .mobile-nav-menu {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    overflow: hidden;
+    transition: opacity 220ms var(--ease-apple), transform 220ms var(--ease-apple), max-height 250ms var(--ease-apple), visibility 220ms;
+}
+.mobile-menu.open, .mobile-nav-menu.open {
+    max-height: 540px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Reduced Motion Override (WCAG 2.2 / Kowalski) */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+    .dropdown-menu, .nav-dropdown, .mobile-menu, .mobile-nav-menu, .scroll-animate, [class*="transition-"] {
+        transform: none !important;
+        transition-duration: 150ms !important;
+    }
+    button:active, a:active {
+        transform: none !important;
+    }
+}
+</style>
+
 <nav class="fixed top-0 w-full z-50 backdrop-blur-2xl bg-slate-900/90 border-b border-slate-800/50 shadow-2xl">
     <div class="container mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
-            <a href="home.php">
+            <a href="home.php" aria-label="E-Books Home">
             <div class="flex items-center">
                 <img src="../../Logos/logo_white.png"
                     alt="Logo"
@@ -57,7 +132,7 @@ if ($isLoggedIn) {
             <!-- Desktop User Box & Cart -->
             <div class="hidden lg:flex items-center space-x-4">
                 <?php if ($isLoggedIn): ?>
-                    <a href="cart.php" class="relative inline-block p-3 text-slate-300 hover:text-emerald-400 transition-colors duration-300 text-xl">
+                    <a href="cart.php" class="relative inline-flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-slate-300 hover:text-emerald-400 transition-colors duration-200 text-xl rounded-lg" aria-label="Shopping Cart">
                         <!-- Cart Icon using Remix Icon -->
                         <i class="ri-shopping-cart-line"></i>
 
@@ -71,13 +146,13 @@ if ($isLoggedIn) {
 
                     <!-- Desktop User Dropdown -->
                     <div class="relative dropdown">
-                        <div id="userMenuBtn" class="inline-block text-xl text-slate-300 hover:text-emerald-400 transition-colors duration-300 relative">
+                        <button id="userMenuBtn" type="button" class="inline-flex items-center justify-center min-w-[44px] min-h-[44px] p-2 text-xl text-slate-300 hover:text-emerald-400 transition-colors duration-200 rounded-lg" aria-label="User account menu" aria-haspopup="true" aria-expanded="false">
                             <i class="ri-user-3-line"></i>
-                            <i class="ri-arrow-down-s-line text-base"></i>
-                        </div>
+                            <i class="ri-arrow-down-s-line text-base ml-1"></i>
+                        </button>
 
                         <!-- Dropdown Menu -->  
-                        <div id="userMenu" class="dropdown-menu absolute right-0 top-16 w-64 backdrop-blur-2xl bg-slate-800/95 border border-slate-700/50 rounded-2xl shadow-2xl hidden opacity-0 translate-y-2">
+                        <div id="userMenu" class="dropdown-menu absolute right-0 top-16 w-64 backdrop-blur-2xl bg-slate-800/95 border border-slate-700/50 rounded-2xl shadow-2xl">
                             <div class="p-4 space-y-2">
                                 <div class="flex items-center border-b border-slate-700/50 pb-3 mb-2">
                                     <div class="ml-3">
@@ -114,7 +189,7 @@ if ($isLoggedIn) {
                         </div>
                     </div>
                 <?php else: ?>
-                    <a href="../../Auth/login.php" class="backdrop-blur-xl bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 hover:text-emerald-400 hover:border-emerald-500/50 transition-all duration-300 px-4 py-2 rounded-lg font-medium">
+                    <a href="../../Auth/login.php" class="backdrop-blur-xl bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 hover:text-emerald-400 hover:border-emerald-500/50 transition-all duration-300 px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center min-h-[44px]">
                         Sign In
                     </a>
                 <?php endif; ?>
@@ -122,7 +197,7 @@ if ($isLoggedIn) {
 
             <!-- Mobile Menu Button -->
             <div class="lg:hidden">
-                <button id="mobile-menu-btn" class="text-slate-300 hover:text-emerald-400 hover:bg-slate-800/50 p-2 rounded">
+                <button id="mobile-menu-btn" class="text-slate-300 hover:text-emerald-400 hover:bg-slate-800/50 p-2 rounded min-w-[44px] min-h-[44px] inline-flex items-center justify-center" aria-label="Toggle mobile menu" aria-expanded="false">
                     <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -158,16 +233,16 @@ if ($isLoggedIn) {
                         </a>
                         <!-- Mobile User Dropdown -->
                         <div class="relative">
-                            <div class="backdrop-blur-xl bg-slate-800/50 border border-slate-700/50 rounded-2xl p-2 shadow-xl cursor-pointer hover:bg-slate-700/50 hover:border-emerald-500/50 transition-all duration-300 flex items-center space-x-2" id="mobileUserMenuBtn">
+                            <button type="button" class="backdrop-blur-xl bg-slate-800/50 border border-slate-700/50 rounded-2xl p-2 shadow-xl cursor-pointer hover:bg-slate-700/50 hover:border-emerald-500/50 transition-all duration-200 flex items-center space-x-2 min-w-[44px] min-h-[44px]" id="mobileUserMenuBtn" aria-label="Toggle user menu" aria-haspopup="true" aria-expanded="false">
                                 <div class="w-9 h-9 bg-gradient-to-br from-emerald-400 to-emerald-600 text-white text-sm font-semibold rounded-full flex items-center justify-center">
                                     <?php echo htmlspecialchars(strtoupper(substr($_SESSION['user'], 0, 2))); ?>
                                 </div>
-                                <svg class="w-4 h-4 text-slate-400 hover:text-emerald-400 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-slate-400 hover:text-emerald-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
-                            </div>
+                            </button>
                             <!-- Mobile Dropdown Menu -->
-                            <div id="mobileUserMenu" class="dropdown-menu absolute left-0 top-12 w-full backdrop-blur-2xl bg-slate-800/95 border border-slate-700/50 rounded-2xl shadow-2xl hidden opacity-0 translate-y-2">
+                            <div id="mobileUserMenu" class="dropdown-menu absolute left-0 top-14 w-full backdrop-blur-2xl bg-slate-800/95 border border-slate-700/50 rounded-2xl shadow-2xl">
                                 <div class="p-4 space-y-2">
                                     <div class="flex items-center border-b border-slate-700/50 pb-3 mb-2">
                                         <div class="ml-3">
@@ -182,7 +257,7 @@ if ($isLoggedIn) {
                                             Email Sent
                                     </p>
                                     <?php endif; ?>
-                                    <a href="#" class="block px-4 py-3 rounded-xl hover:bg-slate-700/50 hover:text-emerald-400 transition-all duration-200 text-slate-300 font-medium">
+                                    <a href="contact.php" class="block px-4 py-3 rounded-xl hover:bg-slate-700/50 hover:text-emerald-400 transition-all duration-200 text-slate-300 font-medium">
                                         Contact & Support
                                     </a>
                                     <hr class="border-slate-700/50 my-3">
@@ -193,7 +268,7 @@ if ($isLoggedIn) {
                             </div>
                         </div>
                     <?php else: ?>
-                        <a href="../../Auth/login.php" class="backdrop-blur-xl bg-slate-700/50 border border-slate-600/50 text-slate-300 px-4 py-2 rounded-lg font-medium">
+                        <a href="../../Auth/login.php" class="backdrop-blur-xl bg-slate-700/50 border border-slate-600/50 text-slate-300 px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center min-h-[44px]">
                             Sign In
                         </a>
                     <?php endif; ?>
@@ -203,7 +278,6 @@ if ($isLoggedIn) {
     </nav>
 
     <script>
-
         document.addEventListener("DOMContentLoaded", function () {
             const mobileMenuBtn = document.getElementById("mobile-menu-btn");
             const mobileMenu = document.getElementById("mobile-menu");
@@ -217,38 +291,30 @@ if ($isLoggedIn) {
             let isUserMenuOpen = false;
             let isMobileUserMenuOpen = false;
 
-            // Ensure dropdowns are hidden on page load
-            if (userMenu) {
-                userMenu.classList.add("hidden", "opacity-0");
-            }
-            if (mobileUserMenu) {
-                mobileUserMenu.classList.add("hidden", "opacity-0");
-            }
-
             // Mobile Menu Toggle
             if (mobileMenuBtn && mobileMenu) {
                 mobileMenuBtn.addEventListener("click", function (e) {
                     e.stopPropagation();
                     isMobileMenuOpen = !isMobileMenuOpen;
+                    mobileMenuBtn.setAttribute("aria-expanded", isMobileMenuOpen ? "true" : "false");
                     if (isMobileMenuOpen) {
-                        mobileMenu.classList.add("open");
-                        mobileMenu.classList.add("p-6");
-                        menuIcon.classList.add("hidden");
-                        closeIcon.classList.remove("hidden");
+                        mobileMenu.classList.add("open", "p-6");
+                        if (menuIcon) menuIcon.classList.add("hidden");
+                        if (closeIcon) closeIcon.classList.remove("hidden");
                     } else {
-                        mobileMenu.classList.remove("open");
-                        mobileMenu.classList.remove("p-6");
-                        menuIcon.classList.remove("hidden");
-                        closeIcon.classList.add("hidden");
+                        mobileMenu.classList.remove("open", "p-6");
+                        if (menuIcon) menuIcon.classList.remove("hidden");
+                        if (closeIcon) closeIcon.classList.add("hidden");
                     }
                 });
 
                 document.addEventListener("click", function (e) {
                     if (isMobileMenuOpen && !mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                         isMobileMenuOpen = false;
-                        mobileMenu.classList.remove("open");
-                        menuIcon.classList.remove("hidden");
-                        closeIcon.classList.add("hidden");
+                        mobileMenuBtn.setAttribute("aria-expanded", "false");
+                        mobileMenu.classList.remove("open", "p-6");
+                        if (menuIcon) menuIcon.classList.remove("hidden");
+                        if (closeIcon) closeIcon.classList.add("hidden");
                     }
                 });
             }
@@ -258,20 +324,19 @@ if ($isLoggedIn) {
                 userMenuBtn.addEventListener("click", function (e) {
                     e.stopPropagation();
                     isUserMenuOpen = !isUserMenuOpen;
+                    userMenuBtn.setAttribute("aria-expanded", isUserMenuOpen ? "true" : "false");
                     if (isUserMenuOpen) {
-                        userMenu.classList.remove("hidden", "opacity-0", "translate-y-2");
-                        userMenu.classList.add("opacity-100", "translate-y-0");
+                        userMenu.classList.add("active");
                     } else {
-                        userMenu.classList.add("hidden", "opacity-0", "translate-y-2");
-                        userMenu.classList.remove("opacity-100", "translate-y-0");
+                        userMenu.classList.remove("active");
                     }
                 });
 
                 document.addEventListener("click", function (e) {
                     if (isUserMenuOpen && !userMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
                         isUserMenuOpen = false;
-                        userMenu.classList.add("hidden", "opacity-0", "translate-y-2");
-                        userMenu.classList.remove("opacity-100", "translate-y-0");
+                        userMenuBtn.setAttribute("aria-expanded", "false");
+                        userMenu.classList.remove("active");
                     }
                 });
             }
@@ -281,20 +346,19 @@ if ($isLoggedIn) {
                 mobileUserMenuBtn.addEventListener("click", function (e) {
                     e.stopPropagation();
                     isMobileUserMenuOpen = !isMobileUserMenuOpen;
+                    mobileUserMenuBtn.setAttribute("aria-expanded", isMobileUserMenuOpen ? "true" : "false");
                     if (isMobileUserMenuOpen) {
-                        mobileUserMenu.classList.remove("hidden", "opacity-0", "translate-y-2");
-                        mobileUserMenu.classList.add("opacity-100", "translate-y-0");
+                        mobileUserMenu.classList.add("active");
                     } else {
-                        mobileUserMenu.classList.add("hidden", "opacity-0", "translate-y-2");
-                        mobileUserMenu.classList.remove("opacity-100", "translate-y-0");
+                        mobileUserMenu.classList.remove("active");
                     }
                 });
 
                 document.addEventListener("click", function (e) {
                     if (isMobileUserMenuOpen && !mobileUserMenu.contains(e.target) && !mobileUserMenuBtn.contains(e.target)) {
                         isMobileUserMenuOpen = false;
-                        mobileUserMenu.classList.add("hidden", "opacity-0", "translate-y-2");
-                        mobileUserMenu.classList.remove("opacity-100", "translate-y-0");
+                        mobileUserMenuBtn.setAttribute("aria-expanded", "false");
+                        mobileUserMenu.classList.remove("active");
                     }
                 });
             }

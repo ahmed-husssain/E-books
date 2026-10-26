@@ -41,7 +41,7 @@ $queryEnded->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Competitions - E - Books</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
@@ -84,22 +84,22 @@ $queryEnded->close();
         }
     </script>
     <style>
-        .mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .mobile-menu.open {
-            max-height: 500px;
-        }
         .scroll-animate {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(12px);
+            transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
         }
         .scroll-animate.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .scroll-animate, .competition-card {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+                transition-duration: 150ms !important;
+            }
         }
         .competition-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
